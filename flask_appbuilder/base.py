@@ -1,6 +1,6 @@
 import logging
 
-from flask import Blueprint, url_for, current_app
+from flask import Blueprint, url_for, current_app, render_template
 from .views import IndexView
 from .filters import TemplateFilters
 from .menu import Menu
@@ -24,6 +24,7 @@ class AppBuilder(object):
         
     """
     baseviews = []
+    security_manager_class = None
     app = None
     session = None
     sm = None
@@ -42,7 +43,8 @@ class AppBuilder(object):
                  menu=None,
                  indexview=None,
                  static_folder='static/appbuilder',
-                 static_url_path='/appbuilder'):
+                 static_url_path='/appbuilder',
+                 security_manager_class=SecurityManager):
         """
             AppBuilder constructor
             
@@ -58,10 +60,12 @@ class AppBuilder(object):
                 optional, your override for the global static folder
             :param static_url_path:
                 optional, your override for the global static url path
+            :param security_manager_class:
+                optional, pass your own security manager class
         """
         self.baseviews = []
         self.menu = menu or Menu()
-
+        self.security_manager_class = security_manager_class
         self.indexview = indexview or IndexView
         self.static_folder = static_folder
         self.static_url_path = static_url_path
@@ -69,7 +73,6 @@ class AppBuilder(object):
         self.app = app
         if app is not None:
             self.init_app(app, session)
-
 
     def init_app(self, app, session):
         app.config.setdefault('APP_NAME', 'F.A.B.')
@@ -80,7 +83,7 @@ class AppBuilder(object):
 
         self.session = session
 
-        self.sm = SecurityManager(self)
+        self.sm = self.security_manager_class(self)
         self.bm = BabelManager(self)
         self._add_global_static()
         self._add_global_filters()
@@ -96,8 +99,6 @@ class AppBuilder(object):
                 # Add missing permissions where needed
                 self._add_permission(baseview)
         self._init_extension(app)
-
-
 
     def _init_extension(self, app):
         if not hasattr(app, 'extensions'):
@@ -131,7 +132,6 @@ class AppBuilder(object):
     def languages(self):
         return self.get_app.config['LANGUAGES']
 
-
     def _add_global_filters(self):
         self.template_filters = TemplateFilters(self.get_app, self.sm)
 
@@ -153,7 +153,6 @@ class AppBuilder(object):
         except Exception as e:
             log.error("Add Permission on Menu Error: {0}".format(str(e)))
 
-
     def _add_menu_permissions(self):
         for category in self.menu.get_list():
             self._add_permissions_menu(category.name)
@@ -161,7 +160,6 @@ class AppBuilder(object):
                 # dont add permission for menu separator
                 if item.name != '-':
                     self._add_permissions_menu(item.name)
-
 
     def _check_and_init(self, baseview):
         # If class if not instantiated, instantiate it
@@ -243,7 +241,8 @@ class AppBuilder(object):
             :param label:
                 The label that will be displayed on the menu, if absent param name will be used
             :param category:
-                The menu category where the menu will be included, if non provided the view will be acessible as a top menu.
+                The menu category where the menu will be included,
+                if non provided the view will be accessible as a top menu.
             :param category_icon:
                 Font-Awesome icon name for the category, optional.
             :param category_label:
@@ -276,7 +275,7 @@ class AppBuilder(object):
                     
         """
         baseview = self._check_and_init(baseview)
-        log.info("Registering class %s" % (baseview.__class__.__name__))
+        log.info("Registering class %s" % baseview.__class__.__name__)
 
         if not self._view_exists(baseview):
             baseview.appbuilder = self
@@ -319,8 +318,7 @@ class AppBuilder(object):
         return url_for('%s.%s' % (self.sm.user_view.endpoint, 'userinfo'))
 
     def get_url_for_locale(self, lang):
-        return url_for('%s.%s' % (self.bm.locale_view.endpoint, self.bm.locale_view.default_view), locale= lang)
-
+        return url_for('%s.%s' % (self.bm.locale_view.endpoint, self.bm.locale_view.default_view), locale=lang)
 
     def _add_permission(self, baseview):
         try:

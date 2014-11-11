@@ -30,7 +30,7 @@ class IndexView(BaseView):
     @expose('/back')
     def back(self):
         return redirect(self.get_redirect())
-        
+
 
 class SimpleFormView(BaseView):
     """
@@ -130,7 +130,6 @@ class ModelView(BaseCRUDView):
 
     def __init__(self, **kwargs):
         super(ModelView, self).__init__(**kwargs)
-
 
     """
     --------------------------------
