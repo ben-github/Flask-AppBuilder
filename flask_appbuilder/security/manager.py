@@ -15,7 +15,7 @@ from ..basemanager import BaseManager
 from .models import User, Role, PermissionView, Permission, ViewMenu
 from .views import AuthDBView, AuthOIDView, ResetMyPasswordView, AuthLDAPView, \
     ResetPasswordView, UserDBModelView, UserLDAPModelView, UserOIDModelView, RoleModelView, \
-    PermissionViewModelView, ViewMenuModelView, PermissionModelView, UserStatsChartView, RegisterUserDBView
+    PermissionViewModelView, ViewMenuModelView, PermissionModelView, UserStatsChartView, RegisterUserDBView, UserRolesView
 
 log = logging.getLogger(__name__)
 
@@ -183,6 +183,10 @@ class SecurityManager(BaseManager):
         self.appbuilder.add_view(PermissionViewModelView,
                                  "Permission on Views/Menus", icon="fa-link",
                                  label=_('Permission on Views/Menus'), category="Security")
+        self.appbuilder.add_view(UserRolesView,
+                                 "User Roles", icon="fa-link",
+                                 label=_('User Roles'), category="Security")
+
 
     def load_user(self, pk):
         return self.get_user_by_id(int(pk))
@@ -263,7 +267,7 @@ class SecurityManager(BaseManager):
             user.username = username
             user.email = email
             user.active = True
-            user.role = role
+            user.role = [role]
             user.password = password
             self.get_session.add(user)
             self.get_session.commit()

@@ -75,6 +75,24 @@ class RegisterUser(Model):
     registration_hash = Column(String(256))
 
 
+class UserRoles(Model):
+    __tablename__ = 'ab_user_roles'
+    id = Column(Integer, primary_key=True)
+    user_id = Column(Integer,ForeignKey('ab_user.id'),nullable=False)
+    user = relationship('User')
+    role_id = Column(Integer,ForeignKey('ab_role.id'),nullable=False)
+    role = relationship('Role')
+
+
+testtable = Table('ab_test', Model.metadata,
+                                  Column('id', Integer, primary_key=True),
+                                  Column('user_id', Integer, ForeignKey('ab_user.id')),
+                                  Column('role_id', Integer, ForeignKey('ab_role.id'))
+)
+
+
+
+
 class User(Model):
     __tablename__ = 'ab_user'
     id = Column(Integer, primary_key=True)
@@ -89,9 +107,10 @@ class User(Model):
     login_count = Column(Integer)
     fail_login_count = Column(Integer)
 
-    role_id = Column(Integer, ForeignKey('ab_role.id'), nullable=False)
-    role = relationship("Role")
-
+    #role_id = Column(Integer, ForeignKey('ab_role.id'), nullable=False)
+    #role = relationship("Role")
+    
+    role = relationship('Role',secondary=testtable) 
     created_on = Column(DateTime, default=datetime.datetime.now, nullable=True)
 
     changed_on = Column(DateTime, default=datetime.datetime.now, nullable=True)

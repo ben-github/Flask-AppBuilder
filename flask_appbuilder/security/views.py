@@ -20,7 +20,7 @@ from ..actions import action
 from ..validators import Unique
 from .._compat import as_unicode
 from .forms import LoginForm_db, LoginForm_oid, ResetPasswordForm, RegisterUserDBForm
-from .models import User, Permission, PermissionView, Role, ViewMenu, RegisterUser
+from .models import User, Permission, PermissionView, Role, ViewMenu, RegisterUser, UserRoles
 from .decorators import has_access
 
 log = logging.getLogger(__name__)
@@ -66,6 +66,10 @@ class PermissionViewModelView(ModelView):
     list_columns = ['permission', 'view_menu']
     show_columns = ['permission', 'view_menu']
     search_columns = ['permission', 'view_menu']
+
+
+class UserRolesView(ModelView):
+    datamodel = SQLAModel(UserRoles)
 
 
 class ResetMyPasswordView(SimpleFormView):
