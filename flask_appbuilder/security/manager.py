@@ -15,7 +15,7 @@ from ..basemanager import BaseManager
 from .models import User, Role, PermissionView, Permission, ViewMenu
 from .views import AuthDBView, AuthOIDView, ResetMyPasswordView, AuthLDAPView, \
     ResetPasswordView, UserDBModelView, UserLDAPModelView, UserOIDModelView, RoleModelView, \
-    PermissionViewModelView, ViewMenuModelView, PermissionModelView, UserStatsChartView, RegisterUserDBView, UserRolesView
+    PermissionViewModelView, ViewMenuModelView, PermissionModelView, UserStatsChartView, RegisterUserDBView
 
 log = logging.getLogger(__name__)
 
@@ -183,10 +183,6 @@ class SecurityManager(BaseManager):
         self.appbuilder.add_view(PermissionViewModelView,
                                  "Permission on Views/Menus", icon="fa-link",
                                  label=_('Permission on Views/Menus'), category="Security")
-        self.appbuilder.add_view(UserRolesView,
-                                 "User Roles", icon="fa-link",
-                                 label=_('User Roles'), category="Security")
-
 
     def load_user(self, pk):
         return self.get_user_by_id(int(pk))
@@ -246,7 +242,7 @@ class SecurityManager(BaseManager):
                     first_name=ADMIN_USER_FIRST_NAME,
                     last_name=ADMIN_USER_LAST_NAME,
                     email=ADMIN_USER_EMAIL,
-                    role=self.get_session.query(Role).filter_by(name=self.auth_role_admin).first(),
+                    roles=[self.get_session.query(Role).filter_by(name=self.auth_role_admin).first()],
                     password=generate_password_hash(ADMIN_USER_PASSWORD)
                 )
                 log.info("Inserted initial Admin user")
@@ -256,7 +252,7 @@ class SecurityManager(BaseManager):
                 "DB Creation and initialization failed, if just upgraded to 0.7.X you must migrate the DB. {0}".format(
                     str(e)))
 
-    def add_user(self, username, first_name, last_name, email, role, password=''):
+    def add_user(self, username, first_name, last_name, email, roles, password=''):
         """
             Generic function to create user
         """
@@ -267,7 +263,7 @@ class SecurityManager(BaseManager):
             user.username = username
             user.email = email
             user.active = True
-            user.role = [role]
+            user.role = roles
             user.password = password
             self.get_session.add(user)
             self.get_session.commit()
@@ -356,7 +352,7 @@ class SecurityManager(BaseManager):
                             first_name=ldap_user_info[self.auth_ldap_firstname_field][0],
                             last_name=ldap_user_info[self.auth_ldap_lastname_field][0],
                             email=ldap_user_info[self.auth_ldap_email_field][0],
-                            role=self.get_role_by_name(self.auth_user_registration_role)
+                            roles=[self.get_role_by_name(self.auth_user_registration_role)]
                         )
 
                     self._update_user_auth_stat(user)
@@ -461,15 +457,13 @@ class SecurityManager(BaseManager):
 
 
     def has_view_access(self, user, permission_name, view_name):
-        lst = user.role.permissions
-        if lst:
-            for i in lst:
-                if (view_name == i.view_menu.name) and (permission_name == i.permission.name):
-                    return True
-            return False
-        else:
-            return False
-
+        for rolelist in user.role:
+            lst = rolelist.permissions
+            if lst:
+                for i in lst:
+                    if (view_name == i.view_menu.name) and (permission_name == i.permission.name):
+                        return True                
+        return False
 
     def has_access(self, permission_name, view_name):
         """
