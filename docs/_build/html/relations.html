@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Model Relations (Quick How to) &mdash; Flask AppBuilder</title>
+    <title>Model Relations &mdash; Flask AppBuilder</title>
     
     <link rel="stylesheet" href="_static/flasky.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,7 +24,7 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <link rel="top" title="Flask AppBuilder" href="index.html" />
-    <link rel="next" title="Base Configuration" href="config.html" />
+    <link rel="next" title="Actions" href="actions.html" />
     <link rel="prev" title="Quick Minimal Application" href="quickminimal.html" />
    
   
@@ -45,7 +45,7 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="config.html" title="Base Configuration"
+          <a href="actions.html" title="Actions"
              accesskey="N">next</a> |</li>
         <li class="right" >
           <a href="quickminimal.html" title="Quick Minimal Application"
@@ -59,15 +59,15 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="model-relations-quick-how-to">
-<h1>Model Relations (Quick How to)<a class="headerlink" href="#model-relations-quick-how-to" title="Permalink to this headline">¶</a></h1>
+  <div class="section" id="model-relations">
+<h1>Model Relations<a class="headerlink" href="#model-relations" title="Permalink to this headline">¶</a></h1>
 <p>On this chapter we are going to show how to setup model relationships and their
 view integration on the framework</p>
 <p>And the source code for this chapter on
 <a class="reference external" href="https://github.com/dpgaspar/Flask-AppBuilder/tree/master/examples/employees">examples</a></p>
 <div class="section" id="many-to-one">
 <h2>Many to One<a class="headerlink" href="#many-to-one" title="Permalink to this headline">¶</a></h2>
-<p>First let&#8217;s check the most simple relationship, already described on the quick how whth the contacts
+<p>First let&#8217;s check the most simple relationship, already described on the quick how to with the contacts
 application.</p>
 <p>Using a different (and slightly more complex) example. Let&#8217;s assume we are building a human resources app.
 So we have an Employees table with some related data.</p>
@@ -125,7 +125,7 @@ So we have an Employees table with some related data.</p>
 <blockquote>
 <div><ul class="simple">
 <li>One employee belongs to a department and a department has many employees</li>
-<li>One employee belongs executes a function and a functions is executed by many employees.</li>
+<li>One employee executes a function and a function is executed by many employees.</li>
 </ul>
 </div></blockquote>
 <p>Now let&#8217;s define ours views (views.py):</p>
@@ -275,7 +275,7 @@ It includes extra functionality like readonly fields, pre and post update logic,
         <div class="sphinxsidebarwrapper">
   <h3><a href="index.html">Table Of Contents</a></h3>
   <ul>
-<li><a class="reference internal" href="#">Model Relations (Quick How to)</a><ul>
+<li><a class="reference internal" href="#">Model Relations</a><ul>
 <li><a class="reference internal" href="#many-to-one">Many to One</a></li>
 <li><a class="reference internal" href="#many-to-many">Many to Many</a></li>
 <li><a class="reference internal" href="#many-to-many-with-extra-properties">Many to Many with extra properties</a></li>
@@ -286,7 +286,7 @@ It includes extra functionality like readonly fields, pre and post update logic,
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
       <li>Previous: <a href="quickminimal.html" title="previous chapter">Quick Minimal Application</a></li>
-      <li>Next: <a href="config.html" title="next chapter">Base Configuration</a></li>
+      <li>Next: <a href="actions.html" title="next chapter">Actions</a></li>
   </ul></li>
 </ul>
   <h3>This Page</h3>

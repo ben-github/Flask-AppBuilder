@@ -10,6 +10,7 @@ OPENID_PROVIDERS = [
     {'name': 'Yahoo', 'url': 'https://me.yahoo.com'},
     {'name': 'AOL', 'url': 'http://openid.aol.com/<username>'},
     {'name': 'Flickr', 'url': 'http://www.flickr.com/<username>'},
+    {'name': 'OpenID', 'url': ''},
     {'name': 'MyOpenID', 'url': 'https://www.myopenid.com'}]
 
 SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(basedir, 'app.db')
@@ -29,14 +30,13 @@ LANGUAGES = {
 }
 
 
-
 #------------------------------
 # GLOBALS FOR GENERAL APP's
 #------------------------------
 UPLOAD_FOLDER = basedir + '/app/static/uploads/'
 IMG_UPLOAD_FOLDER = basedir + '/app/static/uploads/'
 IMG_UPLOAD_URL = '/static/uploads/'
-AUTH_TYPE = 1
+AUTH_TYPE = 0
 #AUTH_LDAP_SERVER = "ldap://dc.domain.net"
 AUTH_ROLE_ADMIN = 'Admin'
 AUTH_ROLE_PUBLIC = 'Public'
@@ -51,9 +51,9 @@ RECAPTCHA_PRIVATE_KEY = '6LedRP0SAAAAAPnsdEKgj5VU1QbFcPv7mO8cW0So'
 # Config for Flask-Mail necessary for user registration
 MAIL_SERVER = 'smtp.gmail.com'
 MAIL_USE_TLS = True
-MAIL_USERNAME = 'danielvazgaspar@gmail.com'
-MAIL_PASSWORD = 'mnopsso01'
-MAIL_DEFAULT_SENDER = 'danielvazgaspar@gmail.com'
+MAIL_USERNAME = 'fabtest10@gmail.com'
+MAIL_PASSWORD = 'Passw0rdqwerty'
+MAIL_DEFAULT_SENDER = 'fabtest10@gmail.com'
 #--------------------------------------
 
 APP_NAME = "F.A.B. Example"

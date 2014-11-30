@@ -1,18 +1,28 @@
 Versions
 ========
 
-Improvements and Bug fixes on 1.0.1
+Improvements and Bug fixes on 1.1.1
+-----------------------------------
+
+- New, allows order on relationships by implicit declaration of col with dotted notation.
+- New, get_order_columns_list receives optional list_columns to narrow search and auto include dotted cols.
+- New, dotted columns are also automatically pretty labeled.
+- Fix, is<Type col> on SQLInterface handles exceptions for none existing cols.
+
+Improvements and Bug fixes on 1.1.0
 -----------------------------------
 
 - Fix, changed WTForm validator Required to DataRequired.
+- Fix, changed WTForm TextField to StringField.
 - New, AUTH_USER_REGISTRATION for self user registration, on ldap it's used automatic registration based on ldap attrs.
-- New, AUTH_USER_REGISTRATION for auth db will present registration form, send email configurable html for activation.
+- New, AUTH_USER_REGISTRATION for auth db will present registration form, send email with configurable html for activation.
+- New, AUTH_USER_REGISTRATION for auth oid will present registration form, send email with configurable html for activation.
 - New, Added property to AppBuilder that returns the frameworks version.
-- New, User extension mixin.
-- (TODO), change auth_ldap to register user with AUTH_USER_REGISTRATION_ROLE.
-- (TODO), change before_request on AppBuilder.init_app to inside SecurityManager.
-- (TODO), AUTH_USER_REGISTRATION for auth OID.
-- (TODO), Full SecurityManager class revision.
+- New, User extension mixin (Beta).
+- New, allows dotted attributes on list_columns, to fetch values from related models.
+- New, AuthOIDView with oid_ask_for and oid_ask_for_optional, for easy dev override of view.
+- New, Access Denied log a warning with info.
+- Fix, OpenID login improvement.
 
 Improvements and Bug fixes on 1.0.1
 -----------------------------------
